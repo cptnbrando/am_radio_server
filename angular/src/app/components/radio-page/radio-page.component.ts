@@ -79,6 +79,9 @@ export class RadioPageComponent implements OnInit {
   @Output() selectedPreset: number = 3;
   @Output() mousePos: Array<number> = [0, 0];
 
+  /**
+   * NEW SKETCH UPDATE THIS
+   */
   @Output() presets: Array<Preset> = [
     new Preset(0, "TestingTesting123", "testing123.png"),
     new Preset(1, "Adventure...!", "adventure.png"),
@@ -86,7 +89,8 @@ export class RadioPageComponent implements OnInit {
     new Preset(3, "Roller Coaster 🎢", "coaster.png"),
     new Preset(4, "Walkie Talkie", "walkie.png"),
     new Preset(5, "🌦 Rain 🌦", "rain.png"),
-    new Preset(6, "☔ nIaR bIcA ☔", "rain.png")
+    new Preset(6, "☔ nIaR bIcA ☔", "rain.png"),
+    new Preset(7, "2 step0", "2step0.png")
   ];
 
   constructor(private spotifyService: SpotifyService, private playerService: SpotifyPlayerService, private script: ScriptService, private radioService: RadioService) {

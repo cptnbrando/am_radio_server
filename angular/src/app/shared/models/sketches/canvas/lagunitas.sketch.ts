@@ -23,6 +23,7 @@ export class Lagunitas extends Time implements Sketch {
         const confidence = this.getBeat();
         if(!Lagunitas.beatSwitch) {
             if(confidence >= .2) {
+                ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
                 Lagunitas.beatSwitch = true;
                 this.getLight(ctx).then(light => {
                     Lagunitas.light = light;
@@ -62,11 +63,11 @@ export class Lagunitas extends Time implements Sketch {
     loop(ctx: CanvasRenderingContext2D): Promise<any> {
         return new Promise((resolve, reject) => {
             this.paint(ctx);
-            Lagunitas.frameKeep++;
-            if(Lagunitas.frameKeep > Lagunitas.frameRate) {
-                ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
-                Lagunitas.frameKeep = 0;
-            }
+            // Lagunitas.frameKeep++;
+            // if(Lagunitas.frameKeep > Lagunitas.frameRate) {
+            //     ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
+            //     Lagunitas.frameKeep = 0;
+            // }
             resolve(true);
         });
     }

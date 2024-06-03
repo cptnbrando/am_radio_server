@@ -3,6 +3,7 @@ import { Sketch } from "../../sketch.model";
 import { Time } from "../../time.model";
 import { Analysis, Features, Segment, Tatum } from "../../track.model";
 import { colors } from './colors';
+import { getRandomArrayElement } from 'src/app/utils/arrays';
 
 class Drop {
     x: number;
@@ -124,7 +125,7 @@ export class Rain extends Time implements Sketch {
      * @returns a random color
      */
     getRandomColor(): string {
-        return Rain.allColors[Math.floor(Math.random()*Rain.allColors.length)];
+        return getRandomArrayElement(Rain.allColors);
     }
 
     /**

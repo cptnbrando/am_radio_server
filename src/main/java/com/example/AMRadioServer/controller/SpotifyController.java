@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 @RestController
 // If you're wondering why you have CORS issues with a Controller and withCredentials, boy do I have the annotation for you
@@ -101,7 +103,12 @@ public class SpotifyController {
     @GetMapping(value = "/getUserPlaylists")
     public PlaylistSimplified[] getUserPlaylists() throws SpotifyWebApiException {
         try {
-            return spotifyApi.getListOfCurrentUsersPlaylists().limit(25).build().execute().getItems();
+            PlaylistSimplified[] playlists = spotifyApi.getListOfCurrentUsersPlaylists().limit(50).build().execute().getItems();
+            PlaylistSimplified[] nonEmptyPlaylists = Arrays.stream(playlists)
+                    .filter(el -> el.getTracks().getTotal() > 0)
+                    .toArray(PlaylistSimplified[]::new);
+
+            return nonEmptyPlaylists;
         }
         catch (IOException | ParseException e)
         {

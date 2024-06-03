@@ -9,6 +9,7 @@ import { RollerCoaster } from 'src/app/shared/models/sketches/canvas/coaster.ske
 import { Lagunitas } from 'src/app/shared/models/sketches/canvas/lagunitas.sketch';
 import { Rain } from 'src/app/shared/models/sketches/canvas/rain.sketch';
 import { Testing123 } from 'src/app/shared/models/sketches/canvas/testing123.sketch';
+import { TwoStepo } from 'src/app/shared/models/sketches/canvas/two-step.sketch';
 import { WalkieTalkie } from 'src/app/shared/models/sketches/canvas/walkie-talkie.sketch';
 import { Time } from 'src/app/shared/models/time.model';
 import { Analysis, Features, Bar, Beat, Section, Segment, Tatum } from 'src/app/shared/models/track.model';
@@ -335,6 +336,8 @@ export class VisualizerComponent implements OnInit, OnChanges {
   }
 
   /**
+   * NEW SKETCH UPDATE THIS
+   * 
    * Returns a new sketch of the selected preset
    * @param preset number of preset
    * @param position current position
@@ -363,6 +366,8 @@ export class VisualizerComponent implements OnInit, OnChanges {
         return new Rain(position, analysis, this.features);
       case 6:
         return new AcidRain(position, analysis, this.features);
+      case 7:
+        return new TwoStepo(position, analysis);
       default:
         return new Testing123(position, analysis);
     }
