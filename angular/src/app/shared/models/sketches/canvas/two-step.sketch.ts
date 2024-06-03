@@ -16,19 +16,22 @@ export class TwoStepo extends Time implements Sketch {
         super(position, analysis);
     }
 
-    static colors: string[] = ["#0072B5", "#E9897E", "#00A170", "#926AA6", "#D2386C", "#FDAC53", "#C3447A", "#E15D44"];
+    static colors: string[] = ["#0072B5", "#E9897E", "#00A170", "#926AA6", "#D2386C", "#FDAC53", "#C3447A", "#E15D44", "#92A8D1", "#F7CAC9", "#88B04B", "#6B5B95", "#FA7A35", "#00758F", "#FFD662", "#8D9440"];
     static tatumCount: number = 0;
     static beatCount: number = 0;
 
     paint(ctx: CanvasRenderingContext2D): void {
         ctx.beginPath();
-        const randColor: string = this.getRandomColor();
+        // Every circle is a blend of 2 random colors
+        const randColor: string = this.getRandomGradient();
         ctx.strokeStyle = randColor;
         ctx.fillStyle = randColor;
         ctx.lineWidth = 20;
+        // Every circle location is random across the screen
         const circleX = 40 + getRandomNumber(ctx.canvas.width - 100);
         const circleY = 100 + getRandomNumber(ctx.canvas.height - 100);
         const confidence = this.getConfidence(this.beat);
+        // The size of the circle is how strong the beat is in the context of the song. Louder hits will be bigger circles
         const radius = Math.abs(confidence * 750);
         ctx.arc(circleX, circleY, radius, 0, 2 * Math.PI);
         ctx.stroke();
@@ -40,16 +43,17 @@ export class TwoStepo extends Time implements Sketch {
 
     loop(ctx: CanvasRenderingContext2D): Promise<any> {
         return new Promise((resolve, reject) => {
+            // This controls the speed of the circles. Every [frameRate] frames a circle will be painted.
             TwoStepo.frameKeep++;
             if(TwoStepo.frameKeep > TwoStepo.frameRate) {
                 this.paint(ctx);
                 TwoStepo.frameKeep = 0;
             }
-            // TwoStepo.frameKeep++;
+
+            // Wipe the screen on every new beat
             if(Time.beatIndex !== TwoStepo.beatCount) {
                 ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
                 TwoStepo.beatCount = Time.beatIndex;
-                // TwoStepo.frameKeep = 0;
             }
             resolve(TwoStepo.frameKeep);
         });
@@ -71,6 +75,12 @@ export class TwoStepo extends Time implements Sketch {
         const confidence_d3 = d3.interpolateNumber(.01, this.beat.confidence);
         const difference = Math.abs(this.roundPos(this.position) - this.beat.start);
         return confidence_d3(difference / this.beat.duration);
+    }
+
+    getRandomGradient(): string {
+        const color_d3 = d3.interpolateLab(this.getRandomColor(), this.getRandomColor());
+        const difference = Math.abs(parseFloat((this.position / 1000).toFixed(3)) - this.beat.start);
+        return color_d3(Math.abs(difference) / this.beat.duration);
     }
 
     /**
