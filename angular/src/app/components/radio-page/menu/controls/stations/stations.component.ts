@@ -30,7 +30,7 @@ export class StationsComponent implements OnInit, OnChanges {
     {
       columnDef: 'current',
       header: 'Now Playing',
-      cell: (element: Station) => (element.current) ? `${element.current.artists[0].name} - ${element.current.name}` : "Inactive",
+      cell: (element: Station) => (element.current) ? `${element.current.name}` : "Inactive",
     },
     {
       columnDef: 'date',
@@ -116,7 +116,7 @@ export class StationsComponent implements OnInit, OnChanges {
     let dom = (date.getHours() < 12) ? "am" : "pm";
     const minutes = (date.getMinutes() < 10) ? `0${date.getMinutes()}` : `${date.getMinutes()}`
     let time = `${hours}:${minutes}${dom}`;
-    
+
     return `${month} ${dayNum}${dayNumSuffix} at ${time}`;
   }
 

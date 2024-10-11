@@ -220,7 +220,10 @@ public class SpotifyPlayerController {
     protected boolean playCheck(String trackURI) throws ExecutionException, InterruptedException {
         GetUsersCurrentlyPlayingTrackRequest now = this.spotifyApi.getUsersCurrentlyPlayingTrack().build();
         CurrentlyPlaying current = now.executeAsync().get();
-        return current.getItem().getUri().equals(trackURI);
+        if(current != null)
+            return current.getItem().getUri().equals(trackURI);
+        else
+            return false;
     }
 
     /**
@@ -302,7 +305,9 @@ public class SpotifyPlayerController {
             PlaylistSimplified[] lists = request.executeAsync().get().getItems();
             PlaylistSimplified randomPlaylist = lists[new Random().nextInt((lists.length))];
             PlaylistTrack[] tracks = spotifyApi.getPlaylistsItems(randomPlaylist.getId()).build().execute().getItems();
-            PlaylistTrack randomTrack = tracks[new Random().nextInt((tracks.length))];
+            int playlistTrackCount = (tracks.length > 0) ? tracks.length : 1;
+            int randTrackIndex = new Random().nextInt(playlistTrackCount);
+            PlaylistTrack randomTrack = tracks[randTrackIndex];
             try {
                 boolean played = this.playTrack(randomTrack.getTrack().getUri());
                 if(played) {
